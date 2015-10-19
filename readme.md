@@ -103,9 +103,14 @@ test("example") {
 ```
 Note: This test is part of the project's test suite to make sure it passes
 
+## Build and dependencies
+The only dependency cui needs at runtime is the scalactic package: http://www.scalactic.org/
+For testing, an additional dependency is required, scalatest: http://www.scalatest.org/
+Both dependencies are managed by SBT and declared in the build.sbt file in the project's root directory.
+
 ## Contact Information
 Comments, questions, suggestions and code review are very welcome at: ronyhe@gmail.com
 
 
 
-This readme file uses the GFM syntax standard: https://help.github.com/articles/github-flavored-markdown/
+*This readme file uses the GFM syntax standard: https://help.github.com/articles/github-flavored-markdown/*
