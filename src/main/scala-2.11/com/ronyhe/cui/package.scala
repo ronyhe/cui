@@ -52,12 +52,11 @@ package object cui {
     * @param minAllowed the minimal number of options the user may choose.
     * @param maxAllowed the maximal number of options the user may choose.
     * @return a Set of of the indexes of the options the user selected
-    *
-    * @throws IllegalArgumentException if options is empty
-    * @throws IllegalArgumentException if minAllowed is smaller than zero
-    * @throws IllegalArgumentException if maxAllowed is smaller than minAllowed
-    * @throws IllegalArgumentException if maxAllowed is larger than the amount of available options
     */
+  @throws[IllegalArgumentException]("if options is empty")
+  @throws[IllegalArgumentException]("if minAllowed is smaller than zero")
+  @throws[IllegalArgumentException]("if maxAllowed is smaller than minAllowed")
+  @throws[IllegalArgumentException]("if maxAllowed is larger than the amount of available options")
   def promptForMultiChoice(instruction: String, options: Seq[String], minAllowed: Int, maxAllowed: Int): Set[Int] = {
     require(options.nonEmpty)
     require(minAllowed >= 0)
