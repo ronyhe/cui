@@ -108,6 +108,11 @@ The only dependency cui needs at runtime is the scalactic package: http://www.sc
 For testing, an additional dependency is required, scalatest: http://www.scalatest.org/
 Both dependencies are managed by SBT and declared in the build.sbt file in the project's root directory.
 
+## Acknowledgments
+I'd like to thank Daniel Westheide for aiding me while learning Scala.
+Check out his "Neophyte's Guide to Scala" series at: http://danielwestheide.com/scala/neophytes.html.
+His blog is also a must-read: http://danielwestheide.com/.
+
 ## Contact Information
 Comments, questions, suggestions and code review are very welcome at: ronyhe@gmail.com
 
