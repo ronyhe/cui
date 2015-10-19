@@ -1,7 +1,7 @@
 # cui - Console User Interface
 cui provides easy ways to interact with the user via a text-based console.
 
-# TL;DR
+## TL;DR
 If all you need is a simple UI that communicates with the user through System.in and System.out, you can use
 the convenience functions provided in the cui package object. They will all display the expected form of input to the
 user; and they will all re-prompt if the input is illegal.
@@ -20,7 +20,7 @@ Should I use cui?	(y / n)
 >>> y
 shouldUseCui: Boolean = true
 ```
-# Overview
+## Overview
 The building blocks are cui.Communicator, cui.Communicator.Action and
 cui.Communicator.UserInputParser.
 
@@ -61,7 +61,7 @@ val parser: UserInputParser[String] = {
 val action = Action("Do not type 'foo'", parser)
 val result = communicator promptFor action
 ```
-# Ready-made Components
+## Ready-made Components
 Some basic components are provided out of the box:
 * cui.Communicator.BasicCommunicator is a communicator that uses System.in and System.out with the
 prompt String ">>> ".
@@ -70,7 +70,7 @@ prompt String ">>> ".
 * cui.Actions has factory methods that return these basic parsers inside instances of Action. They
 also add a description of the expected input to the text that's displayed to the user
 
-# Testing
+## Testing
 If you'd like to test your application, it's simple to provide controlled data to instances of Communicator:
 ```scala
 test("example") {
@@ -103,5 +103,5 @@ test("example") {
 ```
 Note: This test is part of the project's test suite to make sure it passes
 
-# Contact Information
+## Contact Information
 Comments, questions, suggestions and code review are very welcome at: ronyhe@gmail.com
