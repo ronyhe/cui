@@ -1,3 +1,6 @@
+# cui - Console User Interface
+cui provides easy ways to interact with the user via a text-based console.
+
 # TL;DR
 If all you need is a simple UI that communicates with the user through System.in and System.out, you can use
 the convenience functions provided in the cui package object. They will all display the expected form of input to the
