@@ -44,11 +44,11 @@ class Communicator(private val in: Scanner, private val out: PrintStream, privat
 
 object Communicator {
 
-  /** Parses the String the user typed into the console and returns either:
+  /** Parses the String the user typed into the console and returns:
     * Bad(ErrorMessage) in which case the message will be displayed and the user will be re-prompted for input.
-    * Good(T) in which case the parser will return T.
+    * Or Good(T) in which case the parser will return T.
     *
-    * @see [[com.ronyhe.cui.Communicator.promptFor()]]
+    * Used in Communicator#promptFor()
     */
   type UserInputParser[T] = String => T Or ErrorMessage
 
