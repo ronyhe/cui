@@ -46,7 +46,7 @@ type UserInputParser[T] = String => T Or ErrorMessage
 It's meant to receive the text the user typed as a string and return either Good(T) Or Bad(ErrorMessage)
 If it returns Bad, communicator.promptFor will display the ErrorMessage and re-prompt.
 If it returns Good, communicator.promptFor will return the result.
-This means that the method will not return until valid input was delivered.
+**This means that the method will not return until valid input will have been provided.**
 
 That's the entire structure, which means that all the building blocks are located in
 cui.Communicator.
@@ -105,3 +105,7 @@ Note: This test is part of the project's test suite to make sure it passes
 
 ## Contact Information
 Comments, questions, suggestions and code review are very welcome at: ronyhe@gmail.com
+
+
+
+This readme file uses the GFM syntax standard: https://help.github.com/articles/github-flavored-markdown/
