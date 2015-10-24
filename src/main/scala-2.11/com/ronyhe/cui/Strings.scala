@@ -24,11 +24,11 @@ object Strings {
     val isSingleChoice = min == max
     val suffix: String = (min, max, isSingleChoice) match {
       case (1, 1, _) => ""
-      case (a, b, true) => s"Choose $a options. Separate with $sep. $MultiChoiceInputExample'"
-      case (a, b, false) => s"Choose between $a and $b options. $MultiChoiceInputExample'"
+      case (a, b, true) => s"$newLine(Choose $a options. Separate with $sep. $MultiChoiceInputExample')"
+      case (a, b, false) => s"$newLine(Choose between $a and $b options. $MultiChoiceInputExample')"
     }
 
-    instruction + newLine + optionsText + newLine + "(" + suffix + ")"
+    instruction + newLine + optionsText + suffix
   }
 
 
