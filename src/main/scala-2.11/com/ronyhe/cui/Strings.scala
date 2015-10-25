@@ -14,12 +14,13 @@ object Strings {
   val InputsMeaningNo = Set("no", "n")
   def augmentYesOrNoInstruction(instruction: String) = instruction + "\t(y / n)"
 
+  def createOptionsText(options: Seq[String]) = options.zipWithIndex.map { t => s"${t._2+1}) ${t._1}" } .mkString("\n")
 
   def augmentMultiChoiceInstruction(instruction: String, options: Seq[String], min: Int, max:Int): String = {
     val sep = Strings.MultiChoiceInputSeparator
     val newLine = "\n"
 
-    val optionsText = options.zipWithIndex.map { t => s"${t._2}) ${t._1}" } .mkString("\n")
+    val optionsText = createOptionsText(options)
 
     val isSingleChoice = min == max
     val suffix: String = (min, max, isSingleChoice) match {
