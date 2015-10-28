@@ -9,7 +9,7 @@ import org.scalactic.{Bad, Good}
 import org.scalatest.FunSuite
 
 class PackageTest extends FunSuite {
-  test("Example test given in the package object's scaladoc") {
+  test("Example test given in the readme file") {
     val firstInput = "some input we will reject"
     val secondInput = "some other input we will accept"
 
@@ -36,4 +36,5 @@ class PackageTest extends FunSuite {
     val actualOutput = baosThatWillCaptureOutput.toString
     assert(expectedOutput === actualOutput)
   }
+
 }
