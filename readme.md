@@ -20,6 +20,18 @@ Should I use cui?	(y / n)
 >>> y
 shouldUseCui: Boolean = true
 ```
+
+## Internal DSL
+If you're using cui throughout your code, consider using the Dsl trait:
+```scala
+val comm = cui.Communicator.BasicCommunicator  // Provided out of the box
+comm ask "A or B?" suggest new Alternatives[Unit] {
+  "Option A" will println("You chose option A")
+  "Option B" will println("You chose option B")
+}
+```
+For more on this, refer to the scaladoc of the trait cui.Dsl
+
 ## Overview
 The building blocks are cui.Communicator, cui.Communicator.Action and
 cui.Communicator.UserInputParser.
@@ -109,9 +121,12 @@ For testing, an additional dependency is required, scalatest: http://www.scalate
 Both dependencies are managed by SBT and declared in the build.sbt file in the project's root directory.
 
 ## Acknowledgments
-I'd like to thank Daniel Westheide for aiding me while learning Scala.
-Check out his "Neophyte's Guide to Scala" series at: http://danielwestheide.com/scala/neophytes.html.
-His blog is also a must-read: http://danielwestheide.com/.
+* I'd like to thank Daniel Westheide for aiding me while learning Scala.
+  Check out his "Neophyte's Guide to Scala" series at: http://danielwestheide.com/scala/neophytes.html.
+  His blog is also a must-read: http://danielwestheide.com/.
+* I'd also like to thank fogus (https://github.com/fogus). fogus made an internal Scala DSL which implements BASIC.
+  His code helped me a lot while I was trying to learn some of Scala's DSL related features and techniques.
+  Check it out at: https://github.com/fogus/baysick
 
 ## Contact Information
 Comments, questions, suggestions and code review are very welcome at: ronyhe@gmail.com

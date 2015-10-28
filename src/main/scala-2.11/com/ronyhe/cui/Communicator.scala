@@ -62,5 +62,5 @@ object Communicator {
     *
     * Uses [[com.ronyhe.cui.Strings.DefaultPrompt]] as a prompt String
     */
-  val BasicCommunicator = new Communicator(new Scanner(System.in), System.out, Strings.DefaultPrompt)
+  val BasicCommunicator = new Communicator(new Scanner(System.in), System.out, Strings.DefaultPrompt) with Dsl
 }
