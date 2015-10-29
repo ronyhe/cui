@@ -70,4 +70,37 @@ class DslTest extends FunSuite {
     assert(1 === num)
   }
 
+  test("Alternatives with indexes") {
+    val alternatives = new Alternatives[Int] {
+      "one" returns index
+      "two" returns index
+    }
+
+    val (commForOne, _) = CommunicatorTest.communicatorForTesting("1")
+    val (commForTwo, _) = CommunicatorTest.communicatorForTesting("2")
+
+    val firstNum = commForOne ask "" suggest alternatives
+    val secondNum = commForTwo ask "" suggest alternatives
+
+    assert(0 === firstNum)
+    assert(1 === secondNum)
+  }
+
+  test("Alternatives with text") {
+    val alternatives = new Alternatives[String] {
+      "one" returns text
+      "two" returns text
+    }
+
+    val (commForOne, _) = CommunicatorTest.communicatorForTesting("1")
+    val (commForTwo, _) = CommunicatorTest.communicatorForTesting("2")
+
+    val first = commForOne ask "" suggest alternatives
+    val second = commForTwo ask "" suggest alternatives
+
+    assert("one" === first)
+    assert("two" === second)
+
+  }
+
 }
