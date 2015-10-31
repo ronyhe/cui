@@ -117,7 +117,33 @@ class DslTest extends FunSuite {
 
     assertResult ("You chose option number 1 - one") (first)
     assertResult ("You chose option number 2 - two") (second)
-
   }
+
+  test("Using or Alternatives.index too early throws IllegalStateException") {
+    val (comm, _) = CommunicatorTest.communicatorForTesting("")
+      intercept[IllegalStateException] {
+
+      comm ask "Which one?" suggest new Alternatives[String] {
+        val report = s"The user selected index $index"  // Notice the 'val' keyword
+        "one" returns report
+        "two" returns report
+      }
+
+    }
+  }
+
+  test("Using or Alternatives.text too early throws IllegalStateException") {
+    val (comm, _) = CommunicatorTest.communicatorForTesting("")
+    intercept[IllegalStateException] {
+
+      comm ask "Which one?" suggest new Alternatives[String] {
+        val report = s"The user selected index $text"  // Notice the 'val' keyword
+        "one" returns report
+        "two" returns report
+      }
+
+    }
+  }
+
 
 }

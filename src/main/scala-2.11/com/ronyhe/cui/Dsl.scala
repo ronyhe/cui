@@ -76,9 +76,10 @@ trait Dsl extends Communicator {
       val selectedIndex = promptFor(action)
       val selectedFunc = funcs(selectedIndex)
 
-      // Bind the missing values and execute
-      alts.index = selectedIndex
-      alts.text = strings(selectedIndex)
+      // Bind the missing values before execution
+      alts.indexImpl = () => selectedIndex
+      alts.textImpl = () => strings(selectedIndex)
+      
       selectedFunc()
     }
 
@@ -90,37 +91,44 @@ object Dsl {
 
   /** A trait used to supply a Dsl.QuestionBuilder[T] with the options to display to the user and their effects.
     *
-    * Important: The Dsl trait will bind values to 'index' and 'text' just before executing the effect of the option
+    * The Dsl trait will bind values to 'index' and 'text' just before executing the effect of the option
     * the user selected.
-    *
-    * This requires the client to avoid using them in contexts that expect them to already be bound. Example:
+    * This requires client code to avoid using them in contexts that expect them to already be bound. Example:
     * {{{
+    *   // Throws IllegalStateException
     *   val wrong = comm ask "Which one?" suggest new Alternatives[String] {
     *     val report = s"The user selected option $index - $text"  // Notice the 'val' keyword
     *     "one" returns report
     *     "two" returns report
     *   }
-    *
+    *   
+    *   // Works as expected
     *   val right = comm ask "Which one?" suggest new Alternatives[String] {
-    *     def report = s"The user selected option with index $index - $text"  // Notice the 'def' keyword
+    *     def report = s"The user selected option $index - $text"  // Notice the 'def' keyword
     *     "one" returns report
     *     "two" returns report
     *   }
-    *
-    *   // Assuming the user's input was "2"
-    *   println(wrong)  // Will print: "The user option selected with index 0 - Warning: text is unbound at this
-    *   point. See scaladoc for com.ronyhe.cui.Dsl.Alternatives"
-    *   println(right)  // Will print: "The user option selected with index 1 - two"
     * }}}
     */
   trait Alternatives[T] {
-    type AltFunc = () => T
-    private[Dsl] var alternatives = Seq[(String, AltFunc)]()
 
-    // These need to be bound before the execution of an AltFunc
-    var index: Int = _
-    var text: String = "Warning: 'text' is unbound at this point. See scaladoc for com.ronyhe.cui.Dsl.Alternatives"
+    private[Dsl] var alternatives = Seq[(String, () => T)]()
+    
+    def index: Int = indexImpl()
+    def text: String = textImpl()
 
+    // These need to be bound before the execution of an AltFunc.
+    // Binding them is done in Dsl.QuestionBuilder[T]#presentQuestionToUser
+    private[Dsl] var textImpl: () => String = () => {
+      val message = PrematureUsageOfTextOrIndexMessage(true)
+      throw new IllegalStateException(message)
+    }
+
+    private[Dsl] var indexImpl: () => Int = () => {
+      val message = PrematureUsageOfTextOrIndexMessage(false)
+      throw new IllegalStateException(message)
+    }
+    
     class Will(s: String) {
       def will(f: => T)  = {
         alternatives = alternatives :+ (s, () => f)
@@ -129,6 +137,10 @@ object Dsl {
     }
 
     implicit def stringToWill(s: String): Will = new Will(s)
+
+    def PrematureUsageOfTextOrIndexMessage(trueIfTextFalseIfIndex: Boolean) =
+      s"Alternatives[T]#${if(trueIfTextFalseIfIndex) "text" else "index"} isn't bound to a value at this point. See " +
+        "the scala doc for Dsl.Alternatives[T] for more."
   }
 
 }
