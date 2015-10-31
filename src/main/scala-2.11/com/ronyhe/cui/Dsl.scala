@@ -58,7 +58,7 @@ import com.ronyhe.cui.Dsl.Alternatives
   * The functions 'will' and 'returns' are interchangeable. They coexist because one is sometimes more appropriate
   * than the other.
   *
-  * Note that the supplied [[com.ronyhe.cui.Communicator.BasicCommunicator]] has the Dsl trait
+  * Note that the supplied Communicator, [[com.ronyhe.cui.Communicator.BasicCommunicator]], has the Dsl trait
   *
   */
 trait Dsl extends Communicator {
