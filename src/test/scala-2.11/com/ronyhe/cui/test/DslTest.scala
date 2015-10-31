@@ -103,4 +103,21 @@ class DslTest extends FunSuite {
 
   }
 
+  test("text and index work correctly when used together") {
+    val (comm, _) = CommunicatorTest.communicatorForTesting("1\n2")
+
+    val alternatives = new Alternatives[String] {
+      def string = s"You chose option number ${index+1} - $text"
+      "one" returns string
+      "two" returns string
+    }
+
+    val first = comm ask "" suggest alternatives
+    val second = comm ask "" suggest alternatives
+
+    assertResult ("You chose option number 1 - one") (first)
+    assertResult ("You chose option number 2 - two") (second)
+
+  }
+
 }

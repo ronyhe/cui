@@ -75,6 +75,10 @@ trait Dsl extends Communicator {
       val action = Actions.singleChoice(question, strings)
       val selectedIndex = promptFor(action)
       val selectedFunc = funcs(selectedIndex)
+
+      // Bind the missing values and execute
+      alts.index = selectedIndex
+      alts.text = strings(selectedIndex)
       selectedFunc()
     }
 
@@ -83,26 +87,45 @@ trait Dsl extends Communicator {
 }
 
 object Dsl {
-  
+
+  /** A trait used to supply a Dsl.QuestionBuilder[T] with the options to display to the user and their effects.
+    *
+    * Important: The Dsl trait will bind values to 'index' and 'text' just before executing the effect of the option
+    * the user selected.
+    *
+    * This requires the client to avoid using them in contexts that expect them to already be bound. Example:
+    * {{{
+    *   val wrong = comm ask "Which one?" suggest new Alternatives[String] {
+    *     val report = s"The user selected option $index - $text"  // Notice the 'val' keyword
+    *     "one" returns report
+    *     "two" returns report
+    *   }
+    *
+    *   val right = comm ask "Which one?" suggest new Alternatives[String] {
+    *     def report = s"The user selected option with index $index - $text"  // Notice the 'def' keyword
+    *     "one" returns report
+    *     "two" returns report
+    *   }
+    *
+    *   // Assuming the user's input was "2"
+    *   println(wrong)  // Will print: "The user option selected with index 0 - Warning: text is unbound at this
+    *   point. See scaladoc for com.ronyhe.cui.Dsl.Alternatives"
+    *   println(right)  // Will print: "The user option selected with index 1 - two"
+    * }}}
+    */
   trait Alternatives[T] {
-    private[Dsl] var alternatives = Seq[(String, () => T)]()
-    var currentIndex = 0
+    type AltFunc = () => T
+    private[Dsl] var alternatives = Seq[(String, AltFunc)]()
+
+    // These need to be bound before the execution of an AltFunc
+    var index: Int = _
+    var text: String = "Warning: 'text' is unbound at this point. See scaladoc for com.ronyhe.cui.Dsl.Alternatives"
 
     class Will(s: String) {
       def will(f: => T)  = {
         alternatives = alternatives :+ (s, () => f)
       }
       def returns(f: => T) = will(f)
-    }
-
-    def index: Int = {
-      currentIndex += 1
-      currentIndex - 1
-    }
-
-    def text = {
-      val i = index
-      alternatives(i)._1
     }
 
     implicit def stringToWill(s: String): Will = new Will(s)
